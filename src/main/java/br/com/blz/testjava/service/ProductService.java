@@ -13,8 +13,9 @@ public class ProductService {
 		if (product.getInventory() != null && product.getInventory().getWarehouses() != null) {
 			for (Warehouse warehouse : product.getInventory().getWarehouses()) {
 				Integer qtdeTotal = product.getInventory().getQuantity();
-
-				product.getInventory().setQuantity(qtdeTotal + warehouse.getQuantity());
+				Integer qtde = ((warehouse.getQuantity() != null) ? warehouse.getQuantity() : 0);
+				
+				product.getInventory().setQuantity(qtdeTotal + qtde);
 			}
 		}
 

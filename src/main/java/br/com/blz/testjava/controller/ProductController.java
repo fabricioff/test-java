@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.blz.testjava.exception.DuplicateProductException;
 import br.com.blz.testjava.model.Product;
 import br.com.blz.testjava.repository.ProductRepository;
 
@@ -26,8 +28,13 @@ public class ProductController {
 	}
 	
 	@PostMapping("/createProduct")
-	private String addProduct(@RequestBody Product product) {
+	private String addProduct(@RequestBody Product product) throws DuplicateProductException {
 		return String.format("%s\nSKU(%s)", ProductRepository.add(product), product.getSku());
+	}
+	
+	@PutMapping("/editProduct")
+	private String editProduct(@RequestBody Product product) {
+		return String.format("%s\nSKU(%s)", ProductRepository.edit(product), product.getSku());
 	}
 	
 	@DeleteMapping("/deleteProduct")

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.blz.testjava.exception.DuplicateProductException;
 import br.com.blz.testjava.model.Product;
 import br.com.blz.testjava.service.ProductService;
 
@@ -14,14 +15,27 @@ public class ProductRepository {
 	
 	static private Map<String, Product> mapProducts = new LinkedHashMap<String, Product>();
 	
-	static public String add(Product product) {
+	static public String add(Product product) throws DuplicateProductException {
 		StringBuilder status = new StringBuilder();
 		
 		if (!mapProducts.containsKey(product.getSku())) {
 			mapProducts.put(product.getSku(), product);
 			status.append("Produto adicionado com sucesso.");
 		} else {
-			status.append("Produto já existente.");
+			throw new DuplicateProductException(product.getSku());
+		}
+		
+		return status.toString();
+	}
+	
+	static public String edit(Product product) {
+		StringBuilder status = new StringBuilder();
+		
+		if (mapProducts.containsKey(product.getSku())) {
+			mapProducts.put(product.getSku(), product);
+			status.append("Produto editado com sucesso.");
+		} else {
+			status.append("Produto não encontrado.");
 		}
 		
 		return status.toString();
